@@ -25,7 +25,10 @@ function featureNoDb(service) {
 module.exports = {
   featureNoDb: featureNoDb,
   objectService: featureNoDb(require('./object')),
-  permissionService: featureNoDb(require('./permission')),
-  storageService: require('./storage'),
+  permissionService: featureNoDb(require('./permissions/permission')),
+  bucketPermissionService: featureNoDb(require('./permissions/bucketPermission')),
+  bucketService: require('./bucket'),
   userService: featureNoDb(require('./user')),
+  versionService:featureNoDb(require('./version'))
+
 };

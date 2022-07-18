@@ -9,7 +9,9 @@ router.get('/', (_req, res) => {
     endpoints: [
       '/docs',
       '/object',
+      '/bucket',
       '/permission',
+      '/bucketpermission',
       '/user'
     ]
   });
@@ -26,5 +28,11 @@ router.use('/permission', require('./permission'));
 
 /** User Router */
 router.use('/user', require('./user'));
+
+/** Bucket Router */
+router.use('/bucket', require('./bucket'));
+
+/** Bucket Permission Router */
+router.use('/bucketpermission', require('./bucketPermission'));
 
 module.exports = router;

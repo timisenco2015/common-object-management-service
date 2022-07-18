@@ -14,11 +14,11 @@ const config = require('config');
 const { getPath } = require('../components/utils');
 
 // Get app configuration
-const endpoint = config.get('objectStorage.endpoint');
-const bucket = config.get('objectStorage.bucket');
-const defaultTempExpiresIn = parseInt(config.get('objectStorage.defaultTempExpiresIn'), 10);
-const accessKeyId = config.get('objectStorage.accessKeyId');
-const secretAccessKey = config.get('objectStorage.secretAccessKey');
+const endpoint = config.get('objectStorage.s3ObjectStorage.endpoint');
+const bucket = config.get('objectStorage.s3ObjectStorage.bucket');
+const defaultTempExpiresIn = parseInt(config.get('objectStorage.s3ObjectStorage.defaultTempExpiresIn'), 10);
+const accessKeyId = config.get('objectStorage.s3ObjectStorage.accessKeyId');
+const secretAccessKey = config.get('objectStorage.s3ObjectStorage.secretAccessKey');
 
 /**
  * The Core S3 Object Storage Service
@@ -141,7 +141,7 @@ const objectStorageService = {
    * @param {object} [options.tags] Optional object containing key/value pairs for tags
    * @returns {Promise<object>} The response of the put object operation
    */
-  putObject({ stream, id, originalName, mimeType, metadata, tags }) {
+  putObject({ stream, id, originalName, mimeType, size, metadata, tags }) {
     const params = {
       Bucket: bucket,
       ContentType: mimeType,
@@ -154,13 +154,11 @@ const objectStorageService = {
       },
       ServerSideEncryption: 'AES256'
     };
-
     if (tags) {
       params.Tagging = Object.entries(tags).map(([key, value]) => {
         return `${key}=${encodeURIComponent(value)}`;
       }).join('&');
     }
-
     return this._s3Client.send(new PutObjectCommand(params));
   },
 

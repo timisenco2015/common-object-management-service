@@ -12,6 +12,7 @@ class ObjectModel extends Timestamps(Model) {
 
   static get relationMappings() {
     const ObjectPermission = require('./objectPermission');
+    const Bucket = require('./bucket');
 
     return {
       objectPermission: {
@@ -19,9 +20,19 @@ class ObjectModel extends Timestamps(Model) {
         modelClass: ObjectPermission,
         join: {
           from: 'object.id',
-          to: 'object_permission.objectId'
+          to: 'object_permission.objectid'
+        },
+        object: {
+          relation: Model.HasOneRelation,
+          modelClass: Bucket,
+          join: {
+            from: 'object.bucketid',
+            to: 'bucket.id'
+          }
         }
-      }
+      },
+      
+      
     };
   }
 
@@ -60,12 +71,11 @@ class ObjectModel extends Timestamps(Model) {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['id', 'originalName', 'path', 'mimeType'],
+      required: ['id',  'path',  'bucketId'],
       properties: {
         id: { type: 'string', minLength: 1, maxLength: 255 },
-        originalName: { type: 'string', minLength: 1, maxLength: 255 },
+        bucketId:{ type: 'string', maxLength: 255 },
         path: { type: 'string', minLength: 1, maxLength: 1024 },
-        mimeType: { type: 'string', minLength: 1, maxLength: 255 },
         public: { type: 'boolean' },
         active: { type: 'boolean' },
         ...stamps

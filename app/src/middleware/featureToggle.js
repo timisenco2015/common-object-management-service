@@ -65,7 +65,6 @@ const requireDb = (_req, res, next) => {
 const requireSomeAuth = (req, res, next) => {
   const authMode = getAppAuthMode();
   const authType = req.currentUser ? req.currentUser.authType : undefined;
-
   if (authMode !== AuthMode.NOAUTH && (!authType || authType === AuthType.NONE)) {
     return new Problem(403, { detail: 'User lacks permission to complete this action' }).send(res);
   }

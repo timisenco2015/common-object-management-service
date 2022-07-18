@@ -1,7 +1,7 @@
 const { v4: uuidv4, NIL: SYSTEM_USER } = require('uuid');
 
-const { Permissions } = require('../components/constants');
-const { ObjectPermission } = require('../db/models');
+const { Permissions } = require('../../components/constants');
+const { ObjectPermission } = require('../../db/models');
 
 /**
  * The Permission DB Service
@@ -46,9 +46,7 @@ const service = {
           permCode: p.permCode,
           createdBy: currentUserId,
         }));
-
-      // Insert missing entries
-      let response = [];
+        
       if (obj.length) {
         response = await ObjectPermission.query(trx).insertAndFetch(obj);
       }

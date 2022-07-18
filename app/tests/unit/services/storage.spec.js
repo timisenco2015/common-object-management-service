@@ -16,7 +16,7 @@ const service = require('../../../src/services/storage');
 const utils = require('../../../src/components/utils');
 
 const bucket = config.get('objectStorage.bucket');
-const key = utils.delimit(config.get('objectStorage.key'));
+const key = utils.delimit(config.get('objectStorage.s3ObjectStorage.key'));
 const defaultTempExpiresIn = parseInt(config.get('objectStorage.defaultTempExpiresIn'), 10);
 
 const s3ClientMock = mockClient(service._s3Client);

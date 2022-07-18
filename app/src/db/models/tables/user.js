@@ -6,7 +6,7 @@ const { filterOneOrMany, filterILike } = require('../utils');
 
 class User extends Timestamps(Model) {
   static get tableName() {
-    return 'user';
+    return 'users';
   }
 
   static get idColumn() {
@@ -82,6 +82,8 @@ class User extends Timestamps(Model) {
       }
     };
   }
+
+
 
   static get jsonSchema() {
     return {

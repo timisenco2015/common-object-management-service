@@ -1,5 +1,7 @@
 module.exports = {
   objectController: require('./object'),
   permissionController: require('./permission'),
-  userController: require('./user')
+  buckerPermissionController: require('./bucketPermission'),
+  userController: require('./user'),
+  bucketController: require('./bucket')
 };

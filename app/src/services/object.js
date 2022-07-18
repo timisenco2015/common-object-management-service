@@ -1,4 +1,4 @@
-const permissionService = require('./permission');
+const permissionService = require('./permissions/permission');
 const { Permissions } = require('../components/constants');
 const { ObjectModel } = require('../db/models');
 
@@ -27,12 +27,12 @@ const service = {
       // Add file record to DB
       const obj = {
         id: data.id,
-        originalName: data.originalName,
         path: data.path,
-        mimeType: data.mimeType,
         public: data.public,
-        createdBy: data.userId
+        createdBy: data.userId,
+        bucketId:data.bucketId
       };
+
       await ObjectModel.query(trx).insert(obj);
 
       // Add all permission codes for the uploader
@@ -111,6 +111,7 @@ const service = {
       .throwIfNotFound();
   },
 
+
   /**
    * @function update
    * Update an object DB record
@@ -131,9 +132,7 @@ const service = {
 
       // Add file record to DB
       const response = await ObjectModel.query(trx).patchAndFetchById(data.id, {
-        originalName: data.originalName,
         path: data.path,
-        mimeType: data.mimeType,
         public: data.public,
         updatedBy: data.userId
       });

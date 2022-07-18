@@ -31,6 +31,7 @@ const service = {
     };
   },
 
+
   /**
    * @function createIdp
    * Create an identity provider record
@@ -75,7 +76,6 @@ const service = {
         const identityProvider = await service.readIdp(data.idp);
         if (!identityProvider) await service.createIdp(data.idp, trx);
       }
-
       const obj = {
         userId: data.userId,
         identityId: data.identityId,
@@ -152,6 +152,21 @@ const service = {
   },
 
   /**
+   * @function readUserByEmail
+   * Gets a user record
+   * @param {string} email The userId uuid
+   * @returns {Promise<object>} The result of running the find operation
+   * @throws If no record is found
+   */
+   readUserByEmail: (email) => {
+    return User.query()
+      .findOne({email: email})
+      .throwIfNotFound();
+  },
+
+
+
+  /**
    * @function searchUsers
    * Search and filter for specific users
    * @param {string|string[]} [params.userId] Optional string or array of uuids representing the user subject
@@ -181,6 +196,7 @@ const service = {
       .modify('orderLastFirstAscending');
   },
 
+
   /**
    * @function updateUser
    * Updates a user record only if there are changed values
@@ -204,7 +220,7 @@ const service = {
           const identityProvider = await service.readIdp(data.idp);
           if (!identityProvider) await service.createIdp(data.idp, trx);
         }
-
+        
         const obj = {
           identityId: data.identityId,
           username: data.username,
@@ -217,7 +233,7 @@ const service = {
         };
 
         // TODO: add support for updating userId primary key in the event it changes
-        const response = await User.query(trx).patchAndFetchById(userId, obj);
+        const response = await User.query(trx).patchAndFetchById(userId.toLowerCase(), obj);
         if (!etrx) await trx.commit();
         return response;
       } else { // Nothing to update

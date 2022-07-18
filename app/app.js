@@ -13,6 +13,7 @@ const v1Router = require('./src/routes/v1');
 
 const DataConnection = require('./src/db/dataConnection');
 const dataConnection = new DataConnection();
+const databaseName = config.get('db.database');
 
 const apiRouter = express.Router();
 const state = {
@@ -36,6 +37,7 @@ app.use(cors({
     'x-amz-version-id'
   ]
 }));
+
 app.use(express.json({ limit: config.get('server.bodyLimit') }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -49,24 +51,24 @@ if (process.env.NODE_ENV !== 'test') {
 // Application database mode
 if (config.has('db.enabled')) {
   state.connections.data = false;
-  log.info('Running COMS with a database');
+  log.info(`Running ${databaseName} with a database`);
 } else {
-  log.info('Running COMS without a database');
+  log.info(`Running ${databaseName} without a database`);
 }
 
 // Application authentication modes
 switch (state.authMode) {
   case AuthMode.NOAUTH:
-    log.info('Running COMS in public no-auth mode');
+    log.info(`Running ${databaseName} in public no-auth mode`);
     break;
   case AuthMode.BASICAUTH:
-    log.info('Running COMS in basic auth mode');
+    log.info(`Running ${databaseName} in basic auth mode`);
     break;
   case AuthMode.OIDCAUTH:
-    log.info('Running COMS in oidc auth mode');
+    log.info(`Running ${databaseName} in oidc auth mode`);
     break;
   case AuthMode.FULLAUTH:
-    log.info('Running COMS in full (basic + oidc) auth mode');
+    log.info(`Running ${databaseName} in full (basic + oidc) auth mode`);
     break;
 }
 if (state.authMode === AuthMode.OIDCAUTH || state.authMode === AuthMode.FULLAUTH) {

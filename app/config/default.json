@@ -1,16 +1,62 @@
 {
   "db": {
+    "enabled": "true",
     "database": "coms",
     "host": "localhost",
     "port": "5432",
-    "username": "app"
+    "username": "app",
+    "password":"admin"
   },
   "objectStorage": {
-    "defaultTempExpiresIn": "300"
+    "cloudStorage":{
+      "projectId": "formulator-346918",
+      "bucketName":"formulator",
+      "environmentFilePath":"../app/config/formulator-346918-3000043c598d.json"
+    },
+    "azureBlobStorage":{
+      "accountName":"formulator",
+      "accountKey":"hM8f004/XqAzjeO8dNitcsKUollbUcyfPQ9IoRGJRImIMhO2R+fcVca29kvEyCFUy5GtG6G7qyB7+AStxBkotQ==",
+      "bucketName":"formulator-container"
+
+    },
+    "s3ObjectStorage":{
+      "accessKeyId": "AKIAVOL3XM5EVSDRIDFD",
+      "bucket": "formulators",
+      "defaultTempExpiresIn": 6000000,
+      "region":"us-east-1",
+      "endpoint": "https://s3.us-east-1.amazonaws.com",
+      "secretAccessKey":"LRncA2hTXxZosNIY5NmfVxCoyygzIdkZpkjBruMV"
+    },
+    "digitalOceanObjectStorage":{
+      "accessKeyId": "NXDNUEXG7QHU5EAZDF5N",
+      "bucket": "formulator-bucket",
+      "defaultTempExpiresIn": 6000000,
+      "region":"us-east-1",
+      "endpoint": "https://nyc3.digitaloceanspaces.com",
+      "key": "/component",
+      "secretAccessKey":"sT1lLMp1sDO0IiY19n7HTmUiq2+KEaFkrXBTRfn9l04"
+    },
+    "iBMObjectStorage":{
+      "endpoint": "s3.us.cloud-object-storage.appdomain.cloud",
+      "apiKeyId": "cIUoMgMLEH0_6PS6WfWISzAOvoJoetSo9YQFgd39lSgn",
+      "serviceInstanceId":"crn:v1:bluemix:public:cloud-object-storage:global:a/835e9573c7054991822e24decbdc5af1:590e735e-badb-4ea9-b950-d3b966942a97::",
+      "signatureVersion": "iam"
+    },
+    "storageService":"Cloud Storage",
+    "key":"form/"
+    
   },
   "server": {
     "bodyLimit": "30mb",
     "logLevel": "http",
     "port": "3000"
+  },
+
+  "keycloak": {
+    "enabled":true,
+    "clientId": "chefs-backend",
+    "realm": "cp1qly2d",
+    "serverUrl": "http://localhost:8082",
+    "clientSecret": "I2gTJNucfjAOdcBay3oY8U573ce7hgtf"
   }
 }

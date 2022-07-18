@@ -62,6 +62,18 @@ const utils = {
       .concat(defaultValue)[0]; // Add defaultValue as last element of array
   },
 
+    /**
+   * @function getCurrentSubjectEmail
+   * Attempts to acquire current subject id. Yields `defaultValue` otherwise
+   * @param {object} currentUser The express request currentUser object
+   * @param {string} [defaultValue=undefined] An optional default return value
+   * @returns {string} The current subject id if applicable, or `defaultValue`
+   */
+    getCurrentSubjectEmail(currentUser, defaultValue = undefined) {
+      const {tokenPayload: {email}} = currentUser;
+      return email;
+    },
+
   /**
    * @function getCurrentSubject
    * Attempts to acquire current subject id. Yields `defaultValue` otherwise
@@ -140,6 +152,20 @@ const utils = {
   },
 
   /**
+   * @function stringToBoolean
+   * converts string boolean value to boolean
+   * @param {string} string The value to evaluate
+   * @returns {boolean} true or false
+   */
+  stringToBoolean: function(string){
+    switch(string.toLowerCase().trim()){
+        case "true": case "yes": case "1": return true;
+        case "false": case "no": case "0": case null: return false;
+        default: return Boolean(string);
+    }
+  },
+
+  /**
    * @function joinPath
    * Joins a set of string arguments to yield a string path
    * @param  {...string} items The strings to join on
@@ -204,21 +230,49 @@ const utils = {
     return claims.concat('sub');
   },
 
+  // Is a given variable an object?
+  isObject(obj) {
+    return obj !== undefined && obj !== null && obj.constructor == Object;
+  },
+
+   /**
+   * @function getMetadata
+   * Derives metadata from a request header object
+   * @param {object} obj The request headers to get key/value pairs from
+   * @returns {object} An object with metadata key/value pair attributes
+   */
+    getMetadata(obj) {
+      return Object.fromEntries(Object.keys(obj)
+        .filter((key) => key.toLowerCase().startsWith('x-amz-meta-'))
+        .map((key) => ([key.substring(11), obj[key]]))
+      );
+    },
+
+  async bytesToSize(bytes) {
+    return Buffer.byteLength(bytes);
+  },
+
   /**
-   * @function streamToBuffer
+   * @function streamToArray
    * Reads a Readable stream, writes to and returns an array buffer
    * @see {@link https://github.com/aws/aws-sdk-js-v3/issues/1877#issuecomment-755446927}
    * @param {Readable} stream A readable stream object
    * @returns {Buffer} A buffer usually formatted as an Uint8Array
    */
-  streamToBuffer(stream) { // Readable
+   streamToArray(stream) { // Readable
+   
     return new Promise((resolve, reject) => {
       const chunks = []; // Uint8Array[]
-      stream.on('data', (chunk) => chunks.push(chunk));
-      stream.on('end', () => resolve(Buffer.concat(chunks)));
+      stream.on('data', (chunk) =>{
+        chunks.push(chunk)} );
+      stream.on('end', () => resolve(chunks));
       stream.on('error', reject);
     });
-  }
+  },
+
+
 };
+
+
 
 module.exports = utils;
